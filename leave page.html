@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Leave Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            color: #333;
+            background-color: #ffffff;
+            min-height: 100vh;
+        }
+
+        header {
+            position: relative;
+            text-align: center;
+            height: 140px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-weight: 300;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        @keyframes moveCircles {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-50%) translateX(-50%); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        .banner-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: moveCircles 15s infinite linear;
+        }
+
+        .circle:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-duration: 15s;
+        }
+
+        .circle:nth-child(2) {
+            top: 50%;
+            left: 70%;
+            animation-duration: 20s;
+            animation-direction: reverse;
+        }
+
+        .circle:nth-child(3) {
+            top: 80%;
+            left: 40%;
+            animation-duration: 25s;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            margin-top: 10px;
+            width: 100%;
+            padding: 20px;
+            justify-content: space-between;
+        }
+
+        .leave-container {
+            width: 65%;
+            height: auto;
+            padding: 30px;
+            background: linear-gradient(rgb(221, 221, 255), white);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border-radius: 3px;
+        }
+
+        .leave-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            padding-top: 20px;
+            justify-items: stretch;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .form-group label {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            height: 50px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.1);
+            background: white;
+        }
+
+        .form-group select,
+        .form-group input[type="date"] {
+            height: 50px;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 14px;
+            box-sizing: border-box;
+            resize: none;
+            font-size: 1rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .submit-container {
+            grid-column: span 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .btnn {
+            --color: #6a11cb;
+            --bg-color: #fff;
+            font-family: inherit;
+            display: inline-block;
+            width: 320px;
+            height: 3em;
+            line-height: 2.5em;
+            margin: 10px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border: 2px solid var(--color);
+            transition: color 0.5s, background 0.5s;
+            z-index: 1;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            font-weight: 500;
+            color: var(--color);
+            background-color: var(--bg-color);
+        }
+
+        .btnn:before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            background: var(--color);
+            height: 150px;
+            width: 200px;
+            border-radius: 50%;
+            transition: all 0.7s;
+        }
+
+        .btnn:hover {
+            color: var(--bg-color);
+            background-color: var(--color);
+        }
+
+        .btnn:before {
+            top: 100%;
+            left: 100%;
+        }
+
+        .btnn:hover:before {
+            top: -30px;
+            left: -30px;
+        }
+
+        .btnn:active:before {
+            background: #ffffff;
+            transition: background 0s;
+        }
+
+        .btnn:active {
+            color: var(--color);
+            background-color: white;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            display: none;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .calendar-cards {
+            width: 32%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .calendar-container {
+            width: 100%;
+            background: linear-gradient(rgb(94, 94, 249), rgb(146, 146, 255));
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            color: white;
+        }
+
+        .calendar-nav button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #ffffff;
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav button:hover {
+            background: rgba(106, 17, 203, 0.1);
+        }
+
+        .calendar-month {
+            font-weight: 600;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .calendar {
+            width: 100%;
+            height: auto;
+            background: linear-gradient(rgba(194, 194, 255, 0.527), rgb(241, 168, 255));
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .calendar .header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #000000;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .calendar .header span {
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #000000;
+        }
+
+        .calendar .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar .day {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #000000;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .calendar .day:hover {
+            background: #f1f1f1;
+        }
+
+        .calendar .day.leave {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        .calendar .day.holiday {
+            background-color: #f39c12;
+            color: #fff;
+        }
+
+        .calendar .day.today {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .calendar .day.other-month {
+            color: transparent;
+        }
+
+        .calendar .day.other-month:hover {
+            background-color: transparent;
+        }
+
+        .calendar .day[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #34495e;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .leave-stats {
+            width: 100%;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .leave-stats div {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .leave-stats img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 10px;
+            filter: hue-rotate(200deg);
+        }
+
+        .leave-stats h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .leave-stats p {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #6a11cb;
+        }
+
+        .leaves-section {
+            width: flex;
+            background: white;
+            border-radius: 15px;
+            height: 800px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .leaves-section h2 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .view-all-btn {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btnn:hover {
+            color: var(--bg-color);
+            background-color: var(--color-bg-color);
+        }
+
+        .btnn:before {
+            top: 50%;
+            left: 50%;
+        }
+
+        .btnn:hover:before {
+            top: -50px;
+            left: -50px;
+        }
+
+        .btnn:active:before {
+            background: #ffffff;
+            color: var(--color-bg;
+            transition: background 0s;
+        }
+
+        .btnn:active {
+            color: var(--color-bg);
+            background-color: white;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            display: none;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .calendar-card {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .calendar-container {
+            width: linear-gradient;
+            background: linear-gradient(180deg, rgb(94, 94, 249), rgb(146, 149, 255));
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .calendar-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            color: white;
+        }
+
+        .calendar-heading .btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #ffffff;
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-heading .btn:hover {
+            background: rgba(106, 17, 203, 0.3);
+        }
+
+        .calendar-month {
+            font-weight: bold;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .calendar {
+            width: 100%;
+            height: auto;
+            background: linear-gradient(rgba(194, 235,255,0.527), rgb(241,168,255));
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .calendar .header {
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: rgb(0,0,0);
+            padding-bottom: 1px;
+            border-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .calendar .header span {
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #000;
+        }
+
+        .calendar .days {
+            display: grid;
+            grid-template-columns: repeat(7px, 1fr);
+            gap: 8px;
+        }
+
+        .calendar .day {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: normal;
+            color: #000;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .calendar .day:hover {
+            background: #f1f1f1;
+        }
+
+        .calendar .day.leave {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .calendar .day.holiday {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .calendar .day.today {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar .day.other-month {
+            color: transparent;
+        }
+
+        .calendar .day.other-month:hover {
+            background-color: transparent;
+        }
+
+        .calendar .day[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #34495e;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .leave-stats {
+            width: 100%;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .leave-stats div {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .leave-stats img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 10px;
+            filter: hue-rotate(200deg);
+        }
+
+        .leave-stats h3 {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .leave-stats p {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #6a11cb;
+        }
+
+        .leaves-section {
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            height: 800px;
+        }
+
+        .leaves-section h2 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .view-all-btn {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .view-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .leaves-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            padding: 0;
+        }
+
+        .leave-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            color: #000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .leave-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #6a11cb;
+        }
+
+        .leave-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+        }
+
+        .leave-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .leave-card-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a11cb, #2557fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .leave-card-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 0;
+            color: #333;
+        }
+
+        .leave-card-type {
+            font-size: 0.85rem;
+            color: #6a11cb;
+            font-weight: normal;
+        }
+
+        .leave-card-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .leave-card-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leave-card-label {
+            font-weight: normal;
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+
+        .leave-card-value {
+            color: #333;
+            text-align: right;
+            font-size: 0.85rem;
+        }
+
+        .leave-card-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin-top: 5px;
+            align-self: flex-start;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .leave-card .details-button {
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: normal;
+            transition: all 0.3s ease;
+            width: 100px;
+            align-self: flex-end;
+            margin-top: 5px;
+        }
+
+        .leave-card .details-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .no-data, .loading-state {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .no-data img, .loading-state img {
+            width: 100px;
+            height: 100px;
+            opacity: 0.5;
+        }
+
+        .no-data p, .loading-state p {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            line-height: 1.5;
+            width: 90%;
+            max-width: 500px;
+            height: auto;
+            max-height: 80vh;
+            overflow: auto;
+            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .modal-content h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .modal-content .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content .close:hover {
+            color: #e74c3c;
+        }
+
+        #modal-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+        }
+
+        #modal-details p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        #modal-details .leave-card-status {
+            margin-left: 5px;
+        }
+
+        .all-leaves-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: z-index:1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .all-leaves-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+
+        .all-leaves-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            px;
+            padding-bottom: 1px solid #eee;
+            py: 2px;
+        }
+
+        .all-leaves-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .all-leaves-btn-close {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            px;
+        }
+
+        .all-leaves-btn-close:hover {
+            color: #e74c3c;
+            transform: rotate(90deg);
+        }
+
+        .all-leaves-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            px;
+        }
+
+        .popup-card {
+            position: fixed;
+            top: 20px;
+            left: -400px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-size: 20px;
+            z-index: 2;
+            transition: left 0.5s ease-in-out;
+            font-weight: bold;
+        }
+
+        .popup-card.show {
+            left: 20px;
+        }
+
+        .popup-card .hide {
+            left: -400px;
+        }
+
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .confirmation-modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .confirmation-modal-title {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 15px;
+            px;
+        }
+
+        .confirmation-modal p {
+            color: #2c3e50;
+            font-size: 16px;
+            margin-bottom: 20px;
+            py;
+        }
+
+        .confirmation-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            px;
+        }
+
+        .confirmation-modal-buttons .button {
+            padding: 10px 20px;
+            px;
+            py;
+            border: none;
+            border-radius: 8px;
+            py;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            px;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(to right, #135deg, #6a11cb, #2575fc);
+            color: white;
+            font-weight: normal;
+        }
+
+        .confirm-btn:hover .btn {
+            opacity: 0.9;
+            margin-bottom: -2px;
+            py;
+        }
+
+        .cancel-btn {
+            background: #e0e0e0;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .cancel-btn:hover .btn:hover {
+            background: #d0d0d0;
+            margin-bottom: -2px;
+            py;
+        }
+
+        @media (max-width: 1200px) {
+            .page-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .leave-container,
+            .calendar-card {
+                width: 100%;
+                max-width: 800px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                height: 120px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+                color: white;
+            }
+
+            .leave-form {
+                grid-template-columns: auto;
+            }
+
+            .form-group-full-width {
+                grid-column: span 1;
+                flex: 1;
+            }
+
+            .form-title {
+                font-size: 1rem;
+                color: #333;
+            }
+
+            .leave-container {
+                padding: 20px;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 1rem;
+                font-weight: bold;
+            }
+
+            .calendar .day {
+                height: 30px;
+                margin-bottom: 5px;
+                font-size: 0.8rem;
+            }
+
+            .leave-card-title {
+                font-size: 1rem;
+                font-weight: normal;
+            }
+
+            .leave-card-title {
+                font-size: 0.8rem;
+                color: #6a11cb;
+                .leave-card-value {
+                    color: #333;
+                .leave-card-label {
+                    font-weight: normal;
+                    color: #555;
+                margin-bottom: 5px;
+            }
+
+            .leave-card-title {
+                font-size: 0.7rem;
+                margin-bottom: 2px;
+            }
+
+            .leave-card .details-btn {
+                width: 90px;
+                font-size: 10px;
+                margin-left: 10px;
+            }
+
+            .view-all-btn {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+
+            .all-leaves-content {
+                width: 95%;
+                padding: 15px;
+                margin-top: 10px;
+            }
+
+            .all-leaves-grid {
+                grid-template-columns: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                width: 100%;
+                height: 100px;
+            }
+
+            .header h1 {
+                font-size: 1rem;
+                color: #fff;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+                color: white;
+            }
+
+            .leave-container {
+                padding: 15px;
+            }
+
+            .form-title {
+                font-size: 1rem;
+                color: #333;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: top;
+            }
+
+            .calendar-heading {
+                width: auto;
+                justify-content: space-around;
+            }
+
+            .calendar-month {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="banner">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <h1>Employee Leave Form</h1>
+        <p>Apply for leave here</p>
+    </header>
+
+    <div class="page-container">
+        <div class="leave-container">
+            <h2 class="title">Leave Application</h2>
+            <form class="leave-form" id="leave-form">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="full-name" name="name" placeholder="Enter your full name" required minlength="3" maxlength="50"
+                           pattern="^[A-Za-z]+(?:\.[A-Za-z]+)*(?:[0-9A-Za-z\s]+)*(?:\.[A-Z]+)?(?: [A-Za-z]+)*(?:\.[A-Za-z]+){0,3}$"
+                           title="Name cannot start with a space, no consecutive spaces allowed, maximum 8 spaces and max 3 periods allowed.">
+                    <p id="error-message-name" class="error-message"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="emp-id">Employee ID:</label>
+                    <input type="text" id="emp-id" name="emp_id" placeholder="Enter your Employee ID" required minlength="7" maxlength="7" 
+                           pattern="[ATS]{3}0{1}(?!0{3})[0-9]{3}$"
+                           title="Please enter a valid Employee ID (e.g., ATS0 followed by 3 digits, not all zeros)">
+                    <p id="error-message-emp-id" class="error-message"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input id="email" type="email" name="email" placeholder="Enter your Email ID" required minlength="8" maxlength="50"
+                           pattern="^[a-zA-Z][a-z0-9._-][a-z0-9._-]*[a-z0-9A-Z]@(?:gmail\.com|outlook\.com|[\w-]+\.(?:co|in|org))$"
+                           title="Email must start with a letter, end with a letter or number, and a domain of gmail.com, outlook.com, or *.co/in/org">
+                    <p id="error-message-email" class="error-message"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="leave-type">Type of Leave:</label>
+                    <select id="leave-type" name="leave_type" required>
+                        <option value="privilege">Privilege Leave</option>
+                        <option value="basic">Basic Leave</option>
+                        <option value="sick">Sick Leave</option>
+                        <option value="maternity">Maternity Leave</option>
+                        <option value="paternity">Paternity Leave</option>
+                        <option value="marriage">Marriage Leave</option>
+                        <option value="sabbatical">Sabbatical Leave</option>
+                        <option value="bereavement">Bereavement Leave</option>
+                        <option value="half-day">Half-Day Leave</option>
+                        <option value="loss-of-pay">Loss of Pay (LWP)</option>
+                        <option value="compensatory-off">Compensatory Off</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="start-date">Start Date:</label>
+                    <input type="date" id="start-date" name="from_date" required>
+                    <p id="error-message-from-date" class="error-message"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" name="to_date" required>
+                    <p id="error-message-end-date" class="error-message"></p>
+                </div>
+
+                <div id="hour-selection" class="form-group" style="display: none;">
+                    <label for="start-hour">Start Time:</label>
+                    <input type="time" id="start-hour" name="from_hour">
+                    <p id="error-message-start-hour" class="error-message"></p>
+                </div>
+
+                <div id="hour-selection-end" class="form-group" style="display: none;">
+                    <label for="end-hour">End Time:</label>
+                    <input type="time" id="end-hour" name="end_hour">
+                    <p id="error-message-end-hour" class="error-message"></p>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="reason">Reason of Leave:</label>
+                    <textarea id="reason" name="reason" placeholder="Enter your reason" required rows="5" minlength="10" maxlength="50"></textarea>
+                    <p id="error-message-reason" class="error-message"></p>
+                </div>
+
+                <div class="submit-container">
+                    <button type="submit" class="btnn"><span class="btn-text">Submit Request</span></button>
+                </div>
+            </form>
+            <div class="leave-stats">
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2921/2921228.png" alt="Privilege Leave">
+                    <h3>Privilege Leave</h3>
+                    <p id="leave-privilege-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3082/3082383.png" alt="Basic Leave">
+                    <h3>Basic Leave</h3>
+                    <p id="leave-basic-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2948/2948769.png" alt="Sick Leave">
+                    <h3>Sick Leave</h3>
+                    <p id="leave-sick-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135761.png" alt="Maternity Leave">
+                    <h3>Maternity Leave</h3>
+                    <p id="leave-maternity-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="Paternity Leave">
+                    <h3>Paternity Leave</h3>
+                    <p id="leave-paternity-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png" alt="Marriage Leave">
+                    <h3>Marriage Leave</h3>
+                    <p id="leave-marriage-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2921/2921834.png" alt="Sabbatical Leave">
+                    <h3>Sabbatical Leave</h3>
+                    <p id="leave-sabbatical-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3082/3082385.png" alt="Bereavement Leave">
+                    <h3>Bereavement Leave</h3>
+                    <p id="leave-bereavement-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3659/3659794.png" alt="Half-Day Leave">
+                    <h3>Half-Day Leave</h3>
+                    <p id="leave-half-day-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3082/3082387.png" alt="Loss of Pay">
+                    <h3>Loss of Pay</h3>
+                    <p id="leave-loss-of-pay-id">15</p>
+                </div>
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3659/3659796.png" alt="Compensatory Off">
+                    <h3>Compensatory Off</h3>
+                    <p id="leave-compensatory-off-id">15</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-cards">
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-heading">
+                        <button id="prev-month-btn"><</button>
+                        <div class="calendar-month" id="calendar-month">May 2023</div>
+                        <button id="next-month-btn">></button>
+                    </div>
+                </div>
+                <div class="calendar">
+                    <div class="header">
+                        <span>Sun</span>
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                    </div>
+                    <div class="days" id="calendar-days"></div>
+                </div>
+            </div>
+            <div class="leaves-section">
+                <h2>
+                    Applied Leaves
+                    <button class="view-all-btn" id="view-all-btn">View All</button>
+                </h2>
+                <div class="leaves-cards" id="leave-cards"></div>
+            </div>
+
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">×</span>
+                    <h2>Leave Details</h2>
+                    <div id="modal-details"></div>
+                </div>
+            </div>
+
+            <div id="all-leaves-modal" class="all-leaves-modal">
+                <div class="all-leaves-content">
+                    <div class="all-leaves-header">
+                        <h3 class="all-leaves-title">All Leave Requests</h3>
+                        <button class="all-leaves-btn-close">×</button>
+                    </div>
+                    <div class="all-leaves-grid" id="all-leaves-container"></div>
+                </div>
+            </div>
+
+            <div id="confirmation-modal" class="confirmation-modal">
+                <div class="confirmation-modal-content">
+                    <h2 class="confirmation-modal-title">Confirm Leave Submission</h2>
+                    <p>Are you sure you want to submit this leave request?</p>
+                    <div class="confirmation-modal-buttons">
+                        <button class="confirm-btn" id="confirm-submit-btn">Confirm</button>
+                        <button class="cancel-btn" id="cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="popup-card" class="popup-card">
+            Leave request submitted successfully!
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://54.166.206.245:3008/api';
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let cachedLeaves = [];
+        let lastEmpId = null;
+        let pendingLeaveDetails = null;
+
+        const leaveTypes = {
+            'privilege': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/2921/2921228.png' },
+            'basic': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3082/3082383.png' },
+            'sick': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/2948/2948769.png' },
+            'maternity': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135761.png' },
+            'paternity': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135768.png' },
+            'marriage': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3144/3144456.png' },
+            'sabbatical': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/2921/2921834.png' },
+            'bereavement': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3082/3082385.png' },
+            'half-day': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3659/3659794.png' },
+            'loss-of-pay': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3082/3082387.png' },
+            'compensatory-off': { allocated: 15, remaining: 15, icon: 'https://cdn-icons-png.flaticon.com/512/3659/3659796.png' }
+        };
+
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date();
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(today.getMonth() - 3);
+
+            const oneYearFromNow = new Date();
+            oneYearFromNow.setFullYear(today.getFullYear() + 1);
+
+            const formatDate = (date) => date.toISOString().split('T')[0];
+
+            const fromDateInput = document.getElementById('start-date');
+            const toDateInput = document.getElementById('end-date');
+
+            fromDateInput.min = formatDate(threeMonthsAgo);
+            fromDateInput.max = formatDate(oneYearFromNow);
+
+            toDateInput.min = formatDate(threeMonthsAgo);
+            toDateInput.max = formatDate(oneYearFromNow);
+
+            initializeForm();
+            loadCalendar();
+
+            document.getElementById('emp-id').addEventListener('change', debounce(() => {
+                if (validateEmpId()) {
+                    fetchAndUpdateLeaves();
+                    updateLeaveStats();
+                }
+            }, 500));
+
+            document.getElementById('prev-month-btn').addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                loadCalendar();
+            });
+
+            document.getElementById('next-month-btn').addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                loadCalendar();
+            });
+        });
+
+        function initializeForm() {
+            document.getElementById('full-name').addEventListener('input', validateName);
+            document.getElementById('emp-id').addEventListener('input', validateEmpId);
+            document.getElementById('email').addEventListener('input', validateEmail);
+            document.getElementById('reason').addEventListener('input', validateReason);
+            document.getElementById('start-date').addEventListener('change', validateFromDate);
+            document.getElementById('end-date').addEventListener('change', validateToDate);
+            document.getElementById('start-hour').addEventListener('change', validateFromHour);
+            document.getElementById('end-hour').addEventListener('change', validateToHour);
+
+            const fromDateInput = document.getElementById('start-date');
+            const toDateInput = document.getElementById('end-date');
+            const hourSelection = document.querySelectorAll('#hour-selection');
+            const hourSelectionEnd = document.querySelectorAll('#hour-selection-end');
+
+            function toggleHourSelection() {
+                const leaveType = document.getElementById('leave-type').value;
+                if (leaveType === 'half-day' && fromDateInput.value === toDateInput.value) {
+                    hourSelection.forEach(el => el.style.display = 'block');
+                    hourSelectionEnd.forEach(el => el.style.display = 'block');
+                } else {
+                    hourSelection.forEach(el => el.style.display = 'none');
+                    hourSelectionEnd.forEach(el => el.style.display = 'none');
+                    document.getElementById('start-hour').value = '';
+                    document.getElementById('end-hour').value = '';
+                }
+            }
+
+            fromDateInput.addEventListener('change', toggleHourSelection);
+            toDateInput.addEventListener('change', toggleHourSelection);
+            document.getElementById('leave-type').addEventListener('change', toggleHourSelection);
+
+            document.getElementById('leave-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (!validateForm()) return;
+
+                pendingLeaveDetails = {
+                    name: document.getElementById('full-name').value,
+                    emp_id: document.getElementById('emp-id').value,
+                    email: document.getElementById('email').value,
+                    leave_type: document.getElementById('leave-type').value,
+                    from_date: document.getElementById('start-date').value,
+                    to_date: document.getElementById('end-date').value,
+                    from_hour: document.getElementById('start-hour').value || null,
+                    to_hour: document.getElementById('end-hour').value || null,
+                    reason: document.getElementById('reason').value
+                };
+
+                document.getElementById('confirmation-modal').style.display = 'flex';
+            });
+
+            document.getElementById('confirm-submit-btn').addEventListener('click', function () {
+                document.getElementById('confirmation-modal').style.display = 'none';
+                if (pendingLeaveDetails) {
+                    submitLeaveRequest(pendingLeaveDetails);
+                }
+            });
+
+            document.getElementById('cancel-btn').addEventListener('click', function () {
+                document.getElementById('confirmation-modal').style.display = 'none';
+                pendingLeaveDetails = null;
+            });
+
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function () {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === document.getElementById('modal')) {
+                    document.getElementById('modal').style.display = 'none';
+                }
+                if (event.target === document.getElementById('confirmation-modal')) {
+                    document.getElementById('confirmation-modal').style.display = 'none';
+                    pendingLeaveDetails = null;
+                }
+            });
+
+            document.getElementById('view-all-btn').addEventListener('click', () => {
+                document.getElementById('all-leaves-modal').style.display = 'flex';
+            });
+
+            document.querySelector('.all-leaves-btn-close').addEventListener('click', () => {
+                document.getElementById('all-leaves-modal').style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === document.getElementById('all-leaves-modal')) {
+                    document.getElementById('all-leaves-modal').style.display = 'none';
+                }
+            });
+        }
+
+        function submitLeave(leaveDetails) {
+            fetch(`${API_BASE_URL}/leaves`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(leaveDetails)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.error || 'Unknown server error'); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showPopup('Leave request submitted successfully', true);
+                    document.getElementById('leave-form').reset();
+                    document.querySelectorAll('#hour-selection').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('#hour-selection-end').forEach(el => el.style.display = 'none');
+                    cachedLeaves = [];
+                    fetchAndUpdateLeaves();
+                    updateLeaveStats();
+                    pendingLeaveDetails = null;
+                })
+                .catch(error => {
+                    console.error('Error submitting leave:', error);
+                    showPopup(error.message || 'Error submitting leave request', false);
+                    pendingLeaveDetails = null;
+                });
+        }
+
+        function validateName() {
+            const nameInput = document.getElementById('full-name');
+            const errorMessage = document.getElementById('error-message-name');
+            const regex = /^[A-Za-z]+(?:\.[A-Za-z]+)*(?:[0-9\sA-Za-z]+)*(?:\.[A-Z]+)?(?: [A-Za-z0-9]+)*(?:\.[A-Za-z]+){0,2}?$/;
+
+            if (!nameInput.value.trim() || !regex.test(nameInput.value)) {
+                errorMessage.textContent = "Invalid name. No leading/trailing spaces, no consecutive spaces, max eight spaces, max 3 periods allowed.";
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateEmpId() {
+            const empIdInput = document.getElementById('emp-id');
+            const errorMessage = document.getElementById('error-message-emp-id');
+            const regex = /^[ATS]{3}0{1}(?!0{3})[0-9]{3}$/;
+
+            if (!empIdInput.value || !regex.test(empIdInput.value)) {
+                errorMessage.textContent = "Please enter a valid Employee ID format (e.g., ATS01234 or similar, not all zeros).";
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                return true;
+            }
+        }
+function validateEmail() {
+    const emailInput = document.getElementById('email');
+    const errorMessage = document.getElementById('error-message-email');
+    const regex = /^[a-zA-Z][a-z0-9._-][a-z0-9._-]*[a-z0-9A-Z]@(?:(?:[a-z0-9-]+\.)*gmail\.com|(?:[a-z0-9-]+\.)*outlook\.com|[\w-]+\.(?:co|in|org))$/;
+
+    if (!emailInput.value || !regex.test(emailInput.value)) {
+        errorMessage.textContent = 'Please enter a valid email address. Use Gmail, Outlook, or .co/.in/.org domains.';
+        errorMessage.style.display = 'block';
+        return false;
+    } else {
+        errorMessage.style.display = 'none';
+        return true;
+    }
+}
+
+        function validateReason() {
+            const reasonInput = document.getElementById('reason');
+            const errorMessage = document.getElementById('error-message-reason');
+            if (!reasonInput.value || reasonInput.value.length < 3 || reasonInput.value.length > 50) {
+                errorMessage.textContent = "Reason must be between 3 and 50 characters.";
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateFromDate() {
+            const fromDateInput = document.getElementById('start-date');
+            const errorMessage = document.getElementById('error-message-from-date');
+            const today = new Date();
+            const threeMonthsAgo = new Date();
+            threeMonthsAgo.setMonth(today.getMonth() - three3);
+            const oneYearFromNow = new Date();
+            oneYearFromNow.setFullYear(today.getFullYear() + one1);
+
+            const selectedDate = new Date(fromDateInput.value);
+
+            if (!selectedDateInput.value || selectedDate < threeMonthsAgo || selectedDate > oneYearFromNow) {
+                errorMessage.textContent = `From date must be between ${threeMonthsAgo.toLocaleDateString()} and ${oneYearFromNow.toLocaleDateString()}.`;
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateToDate() {
+            const fromDateInput = document.getElementById('start-date');
+            const toDateInput = document.getElementById('end-date');
+            const errorMessage = document.getElementById('error-message-end-date');
+
+            const fromDate = new Date(fromDateInput.value);
+            const toDate = new Date(toDateInput.value);
+
+            if (!toDateInput.value || toDate < fromDate) {
+                errorMessage.textContent = "To date cannot be earlier than From date.";
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateFromHour() {
+            const fromHourInput = document.getElementById('start-hour');
+            const errorMessage = document.getElementById('error-message-start-hour');
+            const leaveType = document.getElementById('leave-type').value;
+
+            if (leaveType === 'half-day' && fromDateInput.value === toDateInput.value && !fromHourInput.value) {
+                errorMessage.textContent = "Please select a valid start time for half-day leave.";
+                errorMessage.style.display = 'block';
+                return false;
+            } else {
+                errorMessage.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validateToHour() {
+            const fromHourInput = document.getElementById('start-hour');
+            const toHourInput = document.getElementById('end-hour');
+            const errorMessage = document.getElementById('error-message-end-hour');
+            const leaveType = document.getElementById('leave-type').value;
+
+            if (leaveType === 'half-day' && fromDateInput.value === toDateInput.value) {
+                if (!fromHourInput.value) {
+                    errorMessage.textContent = "Please select start time first.";
+                    errorMessage.style.display = 'block';
+                    return false;
+                } else if (!toHourInput.value) {
+                        errorMessage.textContent = "Please select an end time.";
+                        errorMessage.style.display = 'block';
+                        return false;
+                    } else {
+                        const fromTime = new Date(`1970-01-01T${fromHourInput.value}:00Z`);
+                        const toTime = new Date(`1970-01-01T${toHourInput.value}:00Z`);
+
+                        if (toTime <= fromTime) {
+                            errorMessage.textContent = "End time must be after start time.";
+                            errorMessage.style.display = 'block';
+                            return false;
+                        } else {
+                            errorMessage.style.display = 'none';
+                            return true;
+                        }
+                    }
+                } else {
+                    errorMessage.style.display = 'none';
+                    return true;
+                }
+            }
+
+        }
+
+        function validateForm() {
+            return validateName() && validateEmpId() && validateEmail() && validateReason() &&
+                   validateFromDate() && validateToDate() && validateFromHour() && validateToHour();
+        }
+
+        function showPopup(message, isSuccess) {
+            const popup = document.getElementById('popup-content');
+            popup.textContent = message;
+            popup.style.background = isSuccess
+                ? 'linear-gradient(to right, #6a11cb, #2575fc)'
+                : 'linear-gradient(to right, #e74c3c, #c0392b)';
+            popup.classList.add('show');
+
+            setTimeout(() => {
+                popup.classList.remove('show');
+                popup.classList.add('hide');
+                setTimeout(() => {
+                    popup.classList.remove('hide');
+                }, 500);
+            }, 3000);
+        }
+
+        function fetchAndUpdateLeaves() {
+            const empId = document.getElementById('emp-id').value;
+            if (!validateEmpId() || empId === lastEmpId && cachedLeaves.length > 0)) {
+                updateLeaveCards(cachedLeaves);
+                updateCalendarWithLeaves(cachedLeaves);
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/leaves/${empId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch leaves');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    cachedLeaves = data;
+                    lastEmpId = empId;
+                    updateLeaveCards(cachedLeaves);
+                    updateCalendarWithLeaves(cachedLeaves);
+                })
+                .catch(error => {
+                    console.error('Error fetching leaves:', error);
+                    updateLeaveCards([]);
+                    updateCalendarWithLeaves([]);
+                    });
+                });
+            }
+
+        function updateLeaveStats() {
+            const empId = document.getElementById('emp-id').value;
+            if (!validateEmpId()) {
+                return;
+            }
+
+            fetch(`${API_BASE_URL}/leave-stats/${empId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load leave statistics');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    Object.keys(leaveTypes).forEach(type => {
+                        const statData = data[type] || { allocated: 15, remaining: 15 };
+                        leaveTypes[type].allocated = statData.allocated;
+                        leaveTypes[type].remaining = statData.remaining;
+                        document.getElementById(`leave-${type}-id`).textContent = statData.remaining.toFixed(2);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching leave stats:', error);
+                    });
+                });
+        }
+
+        function updateLeaveCards(leaves) {
+            const leaveCardsContainer = document.getElementById('leave-cards');
+            const allLeavesContainer = document.getElementById('all-leaves-container');
+
+            if (leaves.length === 0) {
+                leaveCardsContainer.innerHTML = `
+                    <div class="no-data-container">
+                        <img src="https://cdn-icons-png.flaticon.com/512/7486/7486747.png" alt="No Data">
+                        <p>No leave requests found.</p>
+                        .data
+                    </div>
+                `;
+                allLeavesContainer.innerHTML = '';
+                return;
+            }
+
+            const limitedLeaves = leaves.slice(0, 3); // Show only first 3 leaves
+            leaveCardsContainer.innerHTML = limitedLeaves.map(leave => `
+                <div class="card leave-card" data-id="${leave.id}">
+                    <div class="leave-card-header">
+                        <div class="leave-card-img">${leave.name.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <h3 class="leave-card-title">${leave.name}</h3>
+                                <div class="leave-card-type">${leave.leave_type.charAt(0).toUpperCase() + leave.leave_type.slice(1)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="leave-card-details">
+                        <div class="leave-card-detail">
+                            <span class="leave-card-label">From:</span>
+                            <span class="leave-card-value">${new Date(leave.from_date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="leave-card-detail">
+                            <span class="leave-card-label">To:</span>
+                            <span class="leave-card-value">${new Date(leave.to_date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="leave-card-detail">
+                            <span class="leave-card-label">Reason:</span>
+                            <span class="leave-card-value">${leave.reason}</span>
+                        </div>
+                        <div class="leave-card-status status-${leave.status.toLowerCase()}">${leave.status}</div>
+                        <button class="details-button details-btn" data-id="${leave.id}" onclick="showLeaveDetails(${leave.id})">Details</button>
+                    </div>
+                </div>
+            `).join('');
+
+            allLeavesContainer.innerHTML = leaves.map(leave => `
+                <div class="card leave-card" data-id="${leave.id}">
+                    <div class="leave-card-header">
+                        <div class="leave-card-img">${leave.name.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <h3 class="leave-card-title">${leave.name}</h3>
+                                <div class="leave-card-type">${leave.leave_type.charAt(0).toUpperCase() + leave.leave_type.slice(1)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="leave-card-details">
+                        <div class="leave-card-detail">
+                            <span class="leave-card-label">From:</span>
+                            <span class="leave-card-value">${new Date(leave.from_date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="leave-card-detail">
+                            <span class="leave-card-label">To:</span>
+                            <span class="leave-card-value">${new Date(leave.to_date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="leave-card-detail">
+                            <span class="leave-card-label">Reason:</span>
+                            <span class="leave-card-value">${leave.reason}</span>
+                        </div>
+                        <div class="leave-card-status status-${leave.status.toLowerCase()}">${leave.status}</div>
+                        <button class="details-button details-btn" data-id="${leave.id}" onclick="showLeaveDetails(${leave.id})">Details</button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.details-btn').forEach(button => {
+                button.addEventListener('click', () => showLeaveDetails(button.dataset.id));
+                });
+            }
+        }
+
+        function showLeaveDetails(leaveId) {
+            const leave = cachedLeaves.find(leave => leave.id === parseInt(leaveId));
+            if (!leave) {
+                return;
+            }
+
+            const modalDetails = document.getElementById('modal-details');
+            modalDetails.innerHTML = `
+                <p><strong>Employee ID:</strong> ${leave.emp_id}</p>
+                <p><strong>Name:</strong> ${leave.name}</strong></p>
+                <p><strong>Email:</strong> ${leave.email}</p>
+                <p><strong>Leave Type:</strong> ${leave.leave_type.charAt(0).toUpperCase() + leave.leave_type.slice(1)}</p>
+                <p><strong>From:</strong> ${new Date(leave.from_date).toLocaleDateString()}</p>
+                <p><strong>To:</strong> ${new Date(leave.to_date).toLocaleDateString()}</p>
+                ${leave.from_hour ? `<p><strong>Start Time:</strong> ${leave.from_hour}</p>` : '' : ''}
+                ${leave.to_hour ? `<p><strong>End Time:</strong> ${leave.to_hour}</p>` : '' : ''}
+                <p><strong>Reason:</strong> ${leave.reason}</p>
+                <p><strong>Status:</strong> <span class="leave-card-status status-${leave.status.toLowerCase()}">${leave.status}</span></p>
+                <p><strong>Applied On:</strong> ${new Date(leave.created_at).toLocaleDateString()}</p>
+                `;
+            } document.getElementById('modal').style.display = 'flex';
+        }
+
+        function loadCalendar() {
+            const daysContainer = document.getElementById('calendar-days');
+            const monthDisplay = document.getElementById('calendar-month');
+            const today = new Date();
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+            const startingDay = firstDayOfMonth.getDay();
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            monthDisplay.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            daysContainer.innerHTML = '';
+
+            // Add empty days before the first day of the month
+            for (let i = 0; i < startingDay; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day', 'other-month');
+                daysContainer.appendChild(dayElement);
+            }
+
+            // Add days of the current month
+            for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+
+                const currentDate = new Date(currentYear, currentMonth, day);
+                if (currentDate.toDateString() === today.toDateString()) {
+                    dayElement.classList.add('today');
+                }
+
+                // Check if this day has a leave
+                const leaveInfo = getLeaveForDate(currentDate);
+                if (leaveInfo) {
+                    dayElement.classList.add('leave');
+                    dayElement.setAttribute('data-tooltip', `${leaveInfo.leave_type.charAt(0).toUpperCase() + leaveInfo.leave_type.slice(1)}: ${leaveInfo.reason}`);
+                }
+
+                daysContainer.appendChild(dayElement);
+            }
+
+            // Add empty days after the last day to fill the grid
+            const totalDaysDisplayed = startingDay + lastDayOfMonth.getDate();
+            const remainingDays = (7 - (totalDaysDisplayed % 7)) % 7;
+            for (let i = 0; i < remainingDays; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day', 'other-month');
+                daysContainer.appendChild(dayElement);
+            }
+        }
+
+        function getLeaveDetailsForDate(date) {
+            return cachedLeaves.find(leave => {
+                const fromDate = new Date(leave.from_date);
+                const toDate = new Date(leave.to_date);
+                return date >= fromDate && date <= toDate && leave.status === 'Approved';
+            });
+            });
+        }
+
+        function updateCalendarWithLeaves(leaves) {
+            const days = document.querySelectorAll('.calendar .day:not(.other-month-day)');
+            days.forEach((dayElement, index) => {
+                const day = index + 1;
+                const currentDate = new Date(currentYear, currentMonth, day);
+                const leaveInfo = getLeaveDetailsForDate(currentDate);
+
+                if (leaveInfo) {
+                    dayElement.classList.add('leave');
+                    dayElement.setAttribute('data-tooltip', `${leaveInfo.leave_type.charAt(0).toUpperCase() + leaveInfo.leave_type.slice(1)}: ${leaveInfo.reason}`);
+                } else {
+                    dayElement.classList.remove('leave');
+                    dayElement.removeAttribute('data-tooltip');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
